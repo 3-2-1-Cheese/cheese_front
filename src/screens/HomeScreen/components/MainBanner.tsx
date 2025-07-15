@@ -53,6 +53,11 @@ export default function MainBanner(): React.JSX.Element {
         resizeMode="contain"
         source={require('@/assets/images/CHEESE_BG_1.png')}
       />
+      <LinearGradient
+        colors={['rgba(45, 45, 45, 0.95)', 'rgba(0, 0, 0, 0.10)']}
+        start={{ x: 0.5, y: 0 }}
+        end={{ x: 0.5, y: 0.5 }}
+        style={{ position: 'absolute', inset: 0 }}></LinearGradient>
       <CheeseHeader />
       {/* <HomeBannerMap /> */}
       <View style={styles.textContainer}>
@@ -63,11 +68,6 @@ export default function MainBanner(): React.JSX.Element {
           네컷사진관 찾기
         </Animated.Text>
       </View>
-      <LinearGradient
-        colors={['rgba(45, 45, 45, 0.95)', 'rgba(0, 0, 0, 0.10)']}
-        start={{ x: 0.5, y: 0 }}
-        end={{ x: 0.5, y: 0.5 }}
-        style={{ position: 'absolute', inset: 0 }}></LinearGradient>
     </View>
   )
 }
