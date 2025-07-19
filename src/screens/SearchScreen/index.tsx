@@ -1,26 +1,25 @@
 import GoogleMapsScreen from '@/components/maps/HomeBannerMap'
-import { BottomTabParamList } from '@/navigations/BottomTabNavigator'
 import { RouteProp, useFocusEffect, useRoute } from '@react-navigation/native'
 import { View } from 'react-native'
 import CheeseHeader from '@/components/layout/Header'
 import CheeseBanner from './components/SearchBanner'
-import LinearGradient from 'react-native-linear-gradient'
 import { useCallback, useState } from 'react'
 import SearchBottomSheet from './components/SearchBottomSheet'
 import { regionType } from '@/constants/location'
+import { SearchStackParamsList } from '@/navigations/SearchStackNavigator'
 
-type SearchScreenRouteProp = RouteProp<BottomTabParamList, '탐색'>
+type SearchScreenRouteProp = RouteProp<SearchStackParamsList, '탐색'>
 
 export default function SearchScreen(): React.JSX.Element {
   const route = useRoute<SearchScreenRouteProp>()
-  const title = route.params?.title || '잠실' // 기본값 설정
+  const region = route.params?.region || '잠실'
   const [bottomSheetIndex, setBottomSheetIndex] = useState(0)
-  const [activatedPlace, setActivatedPlace] = useState(title)
+  const [activatedPlace, setActivatedPlace] = useState(region)
   useFocusEffect(
     useCallback(() => {
-      setActivatedPlace(title) // 선택된 장소 등록
+      setActivatedPlace(region) // 선택된 장소 등록
       return () => {}
-    }, [title]),
+    }, [region]),
   )
 
   return (

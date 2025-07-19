@@ -12,10 +12,11 @@ import PhotoBookIcon from '@/assets/icons/CHEESE_UNION.svg'
 import { colors } from '@/constants/colors'
 import { TouchableOpacity, View } from 'react-native'
 import useDarkmode from '@/hooks/useDarkmode'
+import SearchStackNavigator from './SearchStackNavigator'
 
 const BOTTOM_TAB_CONSTANTS = {
   HomeScreen: '홈',
-  SearchScreen: '탐색',
+  SearchStack: '탐색',
   PhotoScreen: '사진',
   RecommendScreen: '추천',
   PhotoBookScreen: '사진첩',
@@ -23,7 +24,7 @@ const BOTTOM_TAB_CONSTANTS = {
 
 export type BottomTabParamList = {
   [BOTTOM_TAB_CONSTANTS.HomeScreen]: undefined
-  [BOTTOM_TAB_CONSTANTS.SearchScreen]: { title: string } | undefined // 파라미터 추가
+  [BOTTOM_TAB_CONSTANTS.SearchStack]: { region: string } | undefined // 파라미터 추가
   [BOTTOM_TAB_CONSTANTS.PhotoScreen]: undefined
   [BOTTOM_TAB_CONSTANTS.RecommendScreen]: undefined
   [BOTTOM_TAB_CONSTANTS.PhotoBookScreen]: undefined
@@ -64,7 +65,7 @@ export default function BottomTabNavigator() {
         component={HomeScreen}
       />
       <Tab.Screen
-        name={BOTTOM_TAB_CONSTANTS.SearchScreen}
+        name={BOTTOM_TAB_CONSTANTS.SearchStack}
         options={{
           tabBarIcon: ({ focused }) =>
             focused ? (
@@ -73,7 +74,7 @@ export default function BottomTabNavigator() {
               <SearchIcon color={color.secondary} />
             ),
         }}
-        component={SearchScreen}
+        component={SearchStackNavigator}
       />
       <Tab.Screen
         name={BOTTOM_TAB_CONSTANTS.PhotoScreen}

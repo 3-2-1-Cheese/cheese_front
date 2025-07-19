@@ -1,8 +1,9 @@
 import UIKit
-import GoogleMaps  // 이 import가 있어야 함
+import GoogleMaps
 import React
 import React_RCTAppDelegate
 import ReactAppDependencyProvider
+import RNCKakaoUser
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,9 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
-    // GMSServices.provideAPIKey가 첫 번째 줄이어야 함
     GMSServices.provideAPIKey("AIzaSyA4P_P-3L1i-vFRZG7SfI8qd3_oS0n0wYs")
-    
+
     let delegate = ReactNativeDelegate()
     let factory = RCTReactNativeFactory(delegate: delegate)
     delegate.dependencyProvider = RCTAppDependencyProvider()
@@ -26,13 +26,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     reactNativeFactory = factory
 
     window = UIWindow(frame: UIScreen.main.bounds)
-    
     factory.startReactNative(
       withModuleName: "cheese",
       in: window,
       launchOptions: launchOptions
     )
+    // [RNSplashScreen show]; ->
+    RNSplashScreen.show();
     return true
+  }
+
+  // Linking API (Kakao Login URL)
+  func application(
+    _ app: UIApplication,
+    open url: URL,
+    options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+  ) -> Bool {
+    if RNCKakaoUserUtil.isKakaoTalkLoginUrl(url) {
+      return RNCKakaoUserUtil.handleOpen(url)
+    }
+    return RCTLinkingManager.application(app, open: url, options: options)
   }
 }
 
@@ -43,9 +56,9 @@ class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
 
   override func bundleURL() -> URL? {
 #if DEBUG
-    RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
+    return RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
 #else
-    Bundle.main.url(forResource: "main", withExtension: "jsbundle")
+    return Bundle.main.url(forResource: "main", withExtension: "jsbundle")
 #endif
   }
 }

@@ -1,22 +1,34 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import BottomTabNavigator from './navigations/BottomTabNavigator'
 import { NavigationContainer } from '@react-navigation/native'
-import { userStore } from './stores'
 import AuthScreen from './screens/AuthScreen'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import SplashScreen from 'react-native-splash-screen'
+import { initializeKakaoSDK } from '@react-native-kakao/core'
+import { QueryClientProvider } from '@tanstack/react-query'
+import queryClient from './apis/config/queryClient'
+import { useAuthStore } from './stores/authStore'
 
 function App(): React.JSX.Element {
-  const userId = userStore(state => state.userId)
-  // useEffect(() => {
-  //   // 여기서 사용자 ID를 MMKV에서 불러오는 로직을 추가할 수 있습니다.
-  //   // 예: const storedUserId = mmkv.getString('userId');
-  //   // userStore.setState({ userId: storedUserId || '' });
-  // }, [userId])
+  const userId = useAuthStore(s => s.user?.id)
+
+  useEffect(() => {
+    initializeKakaoSDK('ac61b1ef5b9ef9abe387388939c1cf92')
+    setTimeout(() => {
+      SplashScreen.hide()
+    }, 500)
+  })
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <NavigationContainer>
-        {userId ? <BottomTabNavigator /> : <AuthScreen />}
-      </NavigationContainer>
+      <QueryClientProvider client={queryClient}>
+        <NavigationContainer>
+          <SafeAreaProvider>
+            {userId ? <BottomTabNavigator /> : <AuthScreen />}
+          </SafeAreaProvider>
+        </NavigationContainer>
+      </QueryClientProvider>
     </GestureHandlerRootView>
   )
 }

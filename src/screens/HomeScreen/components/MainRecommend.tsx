@@ -1,7 +1,8 @@
 import { colors } from '@/constants/colors'
+import { usePhotoBooth } from '@/hooks/query/usePhotoBooths'
 import useAnimation from '@/hooks/useAnimation'
 import useDarkmode from '@/hooks/useDarkmode'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   View,
   Text,
@@ -56,6 +57,18 @@ export default function MainRecommend(): React.JSX.Element {
   const [selectedFilter, setSelectedFilter] = useState('인기')
   const isDarkMode = useDarkmode()
   const styles = customStyles(isDarkMode)
+
+  const { handleGetPhotoBooth, isGetPhotoBoothLoading } = usePhotoBooth()
+
+  const handleChangeFilter = (tag: string) => {
+    setSelectedFilter(tag)
+    handleGetPhotoBooth(tag)
+  }
+
+  useEffect(() => {
+    handleGetPhotoBooth('가까운')
+  }, [])
+
   const renderFilterButton = (filter: string) => (
     <TouchableOpacity
       key={filter}
@@ -63,7 +76,7 @@ export default function MainRecommend(): React.JSX.Element {
         styles.filterButton,
         selectedFilter === filter && styles.activeFilterButton,
       ]}
-      onPress={() => setSelectedFilter(filter)}>
+      onPress={() => handleChangeFilter(filter)}>
       <Text
         style={[
           styles.filterButtonText,
@@ -75,7 +88,7 @@ export default function MainRecommend(): React.JSX.Element {
   )
 
   const renderStudioItem = ({ item }: { item: (typeof studioData)[0] }) => (
-    <View style={styles.studioItem}>
+    <View style={styles.studioItem} key={item.id}>
       <View style={styles.studioHeader}>
         <Text style={styles.studioName}>{item.name}</Text>
         <Text style={styles.studioDistance}>{item.distance}</Text>
@@ -107,13 +120,18 @@ export default function MainRecommend(): React.JSX.Element {
         {filterData.map(renderFilterButton)}
       </Animated.View>
       <Animated.View style={[styles.listContainer, animatedStyle]}>
-        <FlatList
+        {/* <FlatList
           data={studioData}
           renderItem={renderStudioItem}
           keyExtractor={item => item.id}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.listContainer}
-        />
+        /> */}
+        <View style={styles.listContainer}>
+          {studioData.map(v => {
+            return renderStudioItem({ item: v })
+          })}
+        </View>
       </Animated.View>
     </View>
   )

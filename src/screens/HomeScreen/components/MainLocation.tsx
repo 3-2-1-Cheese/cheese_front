@@ -49,9 +49,9 @@ export default function MainLocation(): React.JSX.Element {
   const styles = useMemo(() => customStyles({ darkMode }), [])
   const { animatedStyle } = useAnimation()
   const navigation = useNavigation<NavigationProp>()
-  function handleLocationPress(title: string) {
+  function handleLocationPress(region: string) {
     navigation.navigate('탐색', {
-      title,
+      region,
     })
   }
   return (
