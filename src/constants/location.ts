@@ -8,6 +8,8 @@ interface locationType {
   regions: Record<regionType, latlon>
 }
 
+export const MY_LOCATION: latlon = { lat: 37.5, lon: 127.094 }
+
 export const INITIAL_LOCATION: locationType = {
   regions: {
     잠실: { lat: 37.5, lon: 127.094 },

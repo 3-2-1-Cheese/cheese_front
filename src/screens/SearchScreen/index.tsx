@@ -6,9 +6,9 @@ import CheeseBanner from './components/SearchBanner'
 import { useCallback, useState } from 'react'
 import SearchBottomSheet from './components/SearchBottomSheet'
 import { regionType } from '@/constants/location'
-import { SearchStackParamsList } from '@/navigations/SearchStackNavigator'
+import { BottomTabParamList } from '@/navigations/BottomTabNavigator'
 
-type SearchScreenRouteProp = RouteProp<SearchStackParamsList, '탐색'>
+type SearchScreenRouteProp = RouteProp<BottomTabParamList, '탐색'>
 
 export default function SearchScreen(): React.JSX.Element {
   const route = useRoute<SearchScreenRouteProp>()

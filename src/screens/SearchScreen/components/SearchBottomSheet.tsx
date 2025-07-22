@@ -20,6 +20,7 @@ import Animated, {
   withTiming,
   interpolate,
 } from 'react-native-reanimated'
+import { usePhotoBoothLike } from '@/hooks/query/usePhotoBooths'
 
 /* -------------------------------------------------------------------------- */
 /*                             상단 태그(지역 선택)                             */
@@ -47,16 +48,18 @@ interface PlaceItem {
   id: string
   title: string
   distance: string
+  isFavorite: boolean
   tags: string[]
-  thumb: any // 이미지 경로(require)
+  imageUrl: any // 이미지 경로(require)
 }
 
 const PLACE_MOCK: PlaceItem[] = Array.from({ length: 6 }).map((_, i) => ({
   id: `${i}`,
   title: '인생네컷 롯데월드 어드벤처',
   distance: '300m',
+  isFavorite: true,
   tags: ['디즈니', '원어스', '최고심'],
-  thumb: require('@/assets/images/place1.png'), // 프로젝트에 더미 이미지 추가
+  imageUrl: require('@/assets/images/place1.png'), // 프로젝트에 더미 이미지 추가
 }))
 
 /* -------------------------------------------------------------------------- */
@@ -184,7 +187,7 @@ const TagItem: FC<TagItemProps> = ({
 /* -------------------------------------------------------------------------- */
 function BottomSheetContents() {
   const [selectedSort, setSelectedSort] = useState<SortKey>('거리순')
-
+  const { handlePhotoBoothLike } = usePhotoBoothLike()
   /* 필터 버튼 UI */
   const renderSortTabs = () => (
     <View style={styles.sortRow}>
@@ -205,11 +208,10 @@ function BottomSheetContents() {
     </View>
   )
 
-  /* 장소 카드 렌더 */
   const renderPlaceCard = ({ item }: { item: PlaceItem }) => (
     <View style={styles.cardOuter}>
       <View style={styles.cardThumb}>
-        <Image source={item.thumb} resizeMode="cover" />
+        <Image source={item.imageUrl} resizeMode="cover" />
       </View>
       <View style={{ flex: 1, padding: 12 }}>
         <Text style={styles.cardTitle}>{item.title}</Text>
@@ -222,8 +224,16 @@ function BottomSheetContents() {
           ))}
         </View>
       </View>
-      <TouchableOpacity style={styles.heartBtn}>
-        <Text style={{ color: '#A6A6A6', fontSize: 18 }}>♡</Text>
+      <TouchableOpacity
+        style={styles.heartBtn}
+        onPress={() => handlePhotoBoothLike({ id: item.id })}>
+        <Text
+          style={{
+            color: item.isFavorite ? '#FF8500' : '#A6A6A6',
+            fontSize: 18,
+          }}>
+          {item.isFavorite ? '♥' : '♡'}
+        </Text>
       </TouchableOpacity>
     </View>
   )

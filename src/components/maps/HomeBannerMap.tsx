@@ -166,7 +166,11 @@ const GoogleMapsScreen = ({
         {markers
           .filter(marker => marker.region === activatedPlace)
           .map(marker => (
-            <CustomMarker key={marker.id} coordinate={marker.coordinate} />
+            <CustomMarker
+              key={marker.id}
+              isFocused={false}
+              coordinate={marker.coordinate}
+            />
           ))}
       </MapView>
       <LinearGradient

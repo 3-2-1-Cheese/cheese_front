@@ -75,7 +75,7 @@ export default function MainLocation(): React.JSX.Element {
             <Animated.View style={[styles.locationContainer, animatedStyle]}>
               <Image source={item.image} style={styles.locationImage} />
               <LinearGradient
-                colors={['rgba(28, 28, 28, 0.00)', '#1C1C1C']} // 투명에서 흰색으로
+                colors={['#4D4D4D00', '#4D4D4D']} // 투명에서 흰색으로
                 start={{ x: 0, y: 0 }} // 위쪽 시작
                 end={{ x: 0, y: 1 }} // 아래쪽 끝 (180도)
                 locations={[0.125, 1.0]} // 12.5%와 100% 위치
@@ -105,19 +105,15 @@ function customStyles({ darkMode }: { darkMode: boolean }) {
       height: 140,
       overflow: 'hidden',
       position: 'relative',
-      borderRadius: 20,
-      backgroundColor: color.text.secondary,
-      // iOS 그림자
-      shadowColor: '#C8C8C8', // rgba(200, 200, 200, 1)
-      shadowOffset: {
-        width: 0,
-        height: 4,
-      },
-      shadowOpacity: 0.3, // 0.30 opacity
+      borderRadius: 25,
+      backgroundColor: '#404040',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.3,
       shadowRadius: 10,
-      // Android 그림자
       elevation: 8,
     },
+
     locationImage: {
       width: 81.56,
       height: 91,

@@ -12,7 +12,6 @@ import PhotoBookIcon from '@/assets/icons/CHEESE_UNION.svg'
 import { colors } from '@/constants/colors'
 import { TouchableOpacity, View } from 'react-native'
 import useDarkmode from '@/hooks/useDarkmode'
-import SearchStackNavigator from './SearchStackNavigator'
 
 const BOTTOM_TAB_CONSTANTS = {
   HomeScreen: '홈',
@@ -74,7 +73,7 @@ export default function BottomTabNavigator() {
               <SearchIcon color={color.secondary} />
             ),
         }}
-        component={SearchStackNavigator}
+        component={SearchScreen}
       />
       <Tab.Screen
         name={BOTTOM_TAB_CONSTANTS.PhotoScreen}

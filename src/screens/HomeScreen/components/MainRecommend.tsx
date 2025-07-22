@@ -1,7 +1,12 @@
 import { colors } from '@/constants/colors'
+import { MY_LOCATION } from '@/constants/location'
 import { usePhotoBooth } from '@/hooks/query/usePhotoBooths'
 import useAnimation from '@/hooks/useAnimation'
 import useDarkmode from '@/hooks/useDarkmode'
+import { RootStackParamList } from '@/navigations/RootNavigator'
+import { getCurrentPosition } from '@/utils/location'
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import React, { useEffect, useState } from 'react'
 import {
   View,
@@ -52,6 +57,7 @@ const studioData = [
     tags: ['디즈니', '웨어러스', '최고심'],
   },
 ]
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>
 
 export default function MainRecommend(): React.JSX.Element {
   const [selectedFilter, setSelectedFilter] = useState('인기')
@@ -59,14 +65,22 @@ export default function MainRecommend(): React.JSX.Element {
   const styles = customStyles(isDarkMode)
 
   const { handleGetPhotoBooth, isGetPhotoBoothLoading } = usePhotoBooth()
-
-  const handleChangeFilter = (tag: string) => {
+  const handleChangeFilter = async (tag: string) => {
     setSelectedFilter(tag)
-    handleGetPhotoBooth(tag)
+
+    try {
+      const { lat, lon } = await getCurrentPosition()
+      handleGetPhotoBooth({ tag, lat, lon })
+    } catch (err) {
+      console.warn('위치 실패로 필터 요청 건너뜀')
+      handleGetPhotoBooth({ tag, lat: MY_LOCATION.lat, lon: MY_LOCATION.lon })
+    }
   }
 
+  const navigation = useNavigation<NavigationProp>()
+
   useEffect(() => {
-    handleGetPhotoBooth('가까운')
+    handleChangeFilter('가까운')
   }, [])
 
   const renderFilterButton = (filter: string) => (
@@ -88,7 +102,12 @@ export default function MainRecommend(): React.JSX.Element {
   )
 
   const renderStudioItem = ({ item }: { item: (typeof studioData)[0] }) => (
-    <View style={styles.studioItem} key={item.id}>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate('상세', { id: item.id })
+      }}
+      style={styles.studioItem}
+      key={item.id}>
       <View style={styles.studioHeader}>
         <Text style={styles.studioName}>{item.name}</Text>
         <Text style={styles.studioDistance}>{item.distance}</Text>
@@ -107,7 +126,7 @@ export default function MainRecommend(): React.JSX.Element {
           </View>
         ))}
       </View>
-    </View>
+    </TouchableOpacity>
   )
   const { animatedStyle } = useAnimation()
   return (
@@ -185,7 +204,7 @@ function customStyles(isDarkMode: boolean) {
       paddingBottom: 20,
     },
     studioItem: {
-      backgroundColor: color.text.secondary,
+      backgroundColor: '#404040',
       borderRadius: 20,
       padding: 16,
       marginBottom: 12,

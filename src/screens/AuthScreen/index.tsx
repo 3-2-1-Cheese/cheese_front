@@ -11,8 +11,6 @@ import CheeseHeader from '@/components/layout/Header'
 import CHEESE_ACCOUNT from '@/assets/icons/CHEESE_ACCOUNT.svg'
 import CHEESE_KAKAO_ICON from '@/assets/icons/CHEESE_KAKAO_ICON.svg'
 import { login } from '@react-native-kakao/user'
-import { loginApi } from '@/apis'
-import { storage } from '@/utils/storage'
 import { useLogin } from '@/hooks/query/useAuth'
 
 export default function AuthScreen(): React.JSX.Element {

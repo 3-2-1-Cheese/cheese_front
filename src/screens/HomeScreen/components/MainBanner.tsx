@@ -45,19 +45,19 @@ export default function MainBanner(): React.JSX.Element {
   })
   const isDarkMode = useDarkmode()
   const styles = customStyles(safeAreaInsets, isDarkMode)
-  const color = colors(isDarkMode)
   return (
     <View style={styles.imageContainer}>
       <Image
         style={styles.image}
-        resizeMode="contain"
+        resizeMode="cover"
         source={require('@/assets/images/CHEESE_BG_1.png')}
       />
       <LinearGradient
         colors={['rgba(45, 45, 45, 0.95)', 'rgba(0, 0, 0, 0.10)']}
         start={{ x: 0.5, y: 0 }}
         end={{ x: 0.5, y: 0.5 }}
-        style={{ position: 'absolute', inset: 0 }}></LinearGradient>
+        style={{ position: 'absolute', inset: 0 }}
+      />
       <CheeseHeader />
       {/* <HomeBannerMap /> */}
       <View style={styles.textContainer}>

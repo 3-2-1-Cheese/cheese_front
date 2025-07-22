@@ -6,6 +6,7 @@ function useLoginMutation() {
   return useMutation({
     mutationFn: loginApi,
     onSuccess: data => {
+      console.log(data)
       setAuth(data.accessToken, data.user)
     },
   })

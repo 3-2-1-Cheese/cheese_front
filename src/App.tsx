@@ -9,10 +9,10 @@ import { initializeKakaoSDK } from '@react-native-kakao/core'
 import { QueryClientProvider } from '@tanstack/react-query'
 import queryClient from './apis/config/queryClient'
 import { useAuthStore } from './stores/authStore'
-
+import RootNavigator from './navigations/RootNavigator'
 function App(): React.JSX.Element {
-  const userId = useAuthStore(s => s.user?.id)
-
+  const accessToken = useAuthStore(s => s.accessToken)
+  // const clearAuth = useAuthStore(s=>s.clearAuth)
   useEffect(() => {
     initializeKakaoSDK('ac61b1ef5b9ef9abe387388939c1cf92')
     setTimeout(() => {
@@ -25,7 +25,7 @@ function App(): React.JSX.Element {
       <QueryClientProvider client={queryClient}>
         <NavigationContainer>
           <SafeAreaProvider>
-            {userId ? <BottomTabNavigator /> : <AuthScreen />}
+            {accessToken ? <RootNavigator /> : <AuthScreen />}
           </SafeAreaProvider>
         </NavigationContainer>
       </QueryClientProvider>

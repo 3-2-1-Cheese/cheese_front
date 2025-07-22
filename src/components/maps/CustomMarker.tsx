@@ -1,14 +1,21 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { Marker } from 'react-native-maps'
-
+import FocusedMarker from '@/assets/icons/FocusedMarker.svg'
 const CustomMarker = ({
   coordinate,
+  isFocused,
 }: {
   coordinate: { latitude: number; longitude: number }
+  isFocused: boolean
 }) => {
   return (
     <Marker coordinate={coordinate}>
+      {isFocused && (
+        <View>
+          <FocusedMarker />
+        </View>
+      )}
       <View style={styles.outerCircle}>
         <View style={styles.innerCircle} />
       </View>

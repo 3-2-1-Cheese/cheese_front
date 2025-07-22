@@ -1,4 +1,4 @@
-import { getAccessToken, storage } from '@/utils/storage'
+import { useAuthStore } from '@/stores/authStore'
 import { logout } from '@react-native-kakao/user'
 import axios from 'axios'
 
@@ -12,7 +12,7 @@ const axiosInstance = axios.create({
 })
 axiosInstance.interceptors.request.use(
   async config => {
-    const token = getAccessToken()
+    const token = useAuthStore.getState().accessToken
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
@@ -22,17 +22,5 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error)
   },
 )
-axiosInstance.interceptors.response.use(
-  response => response,
-  error => {
-    if (error.response?.status === 403) {
-      console.warn('403 응답 → 토큰 삭제 및 로그아웃 실행')
 
-      storage.delete('access-token')
-      storage.delete('user')
-    }
-
-    return Promise.reject(error)
-  },
-)
 export default axiosInstance

@@ -1,12 +1,17 @@
 import { colors } from '@/constants/colors'
-import { fonts } from '@/constants/fonts'
 import useDarkmode from '@/hooks/useDarkmode'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context'
 import CheeseLogo from '@/assets/icons/CHEESE_LOGO.svg'
 import CheeseUser from '@/assets/icons/CHEESE_USER.svg'
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '@/navigations/RootNavigator'
 
 export default function CheeseHeader() {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>()
+
   const safeAreaInsets = useSafeAreaInsets()
   const isDarkMode = useDarkmode()
 
@@ -15,14 +20,17 @@ export default function CheeseHeader() {
 
   return (
     <View style={styles.header}>
-      <CheeseLogo color={color.active} />
-      <CheeseUser color={color.text.primary} />
+      <TouchableOpacity onPress={() => navigation.navigate('메인')}>
+        <CheeseLogo color={color.active} />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('마이페이지')}>
+        <CheeseUser color={color.text.primary} />
+      </TouchableOpacity>
     </View>
   )
 }
 
 function customStyles(safeAreaInsets: EdgeInsets, isDarkMode: boolean) {
-  const color = colors(isDarkMode)
   return StyleSheet.create({
     header: {
       position: 'absolute',
@@ -32,6 +40,7 @@ function customStyles(safeAreaInsets: EdgeInsets, isDarkMode: boolean) {
       paddingTop: safeAreaInsets.top + 10,
       paddingBottom: 10,
       left: 0,
+      zIndex: 9999,
       right: 0,
       paddingHorizontal: 28,
     },
